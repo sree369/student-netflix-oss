@@ -1,2 +1,2 @@
 # student-netflix-oss
-Microservice project POC using student microservices
+Netflix POC for school student applications
