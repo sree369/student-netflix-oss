@@ -1,0 +1,6 @@
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (70, 1, 10001, 'TERM1', 1);
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (44, 1, 10002, 'TERM1', 2);
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (50, 1, 10003, 'TERM1', 3);
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (45, 1, 10005, 'TERM1', 4);
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (55, 1, 10006, 'TERM1', 5);
+insert into marks (obtained_marks, student_id, subject_id, term_type, marks_id) values (60, 1, 10007, 'TERM1', 6);

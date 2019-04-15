@@ -1,0 +1,10 @@
+insert into subject (sub_short_name, subject_name, subjectid) values ('ENG', 'English', 10001);
+insert into subject (sub_short_name, subject_name, subjectid) values ('MAT', 'Mathematics', 10002);
+insert into subject (sub_short_name, subject_name, subjectid) values ('HIN', 'Hindi', 10003);
+insert into subject (sub_short_name, subject_name, subjectid) values ('MAR', 'Marathi', 10004);
+insert into subject (sub_short_name, subject_name, subjectid) values ('GER', 'German', 10005);
+insert into subject (sub_short_name, subject_name, subjectid) values ('SCI', 'Science', 10006);
+insert into subject (sub_short_name, subject_name, subjectid) values ('SST', 'Social Science', 10007);
+insert into subject (sub_short_name, subject_name, subjectid) values ('ICT', 'ICT', 10008);
+insert into subject (sub_short_name, subject_name, subjectid) values ('EVS', 'EVS', 10009);
+insert into subject (sub_short_name, subject_name, subjectid) values ('COM', 'Computer', 10010);
