@@ -28,4 +28,14 @@ public class SubjectDAOService {
 		return subjects;
 	}
 	
+	public Subject saveSubject(Subject subject){
+		
+		Subject sub = repo.save(subject);
+		return sub;
+	}
+	
+	public void deleteSubject(String subjectid) {
+		repo.deleteById(Long.parseLong(subjectid));
+	}
+	
 }

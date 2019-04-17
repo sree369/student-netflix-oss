@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.sree.studentnetflixoss.subject.Configuration;
@@ -35,6 +36,18 @@ public class SubjectService {
 	private List subjects_class_5; 
 	
 	private List subjects_class_7;
+	
+	@Value("${subjects.class.5.maxmarks.40}")
+	private String class5subjectsMaxMarks40;
+
+	@Value("${subjects.class.5.maxmarks.20}")
+	private String class5subjectsMaxMarks20;
+	
+	@Value("${subjects.class.7.maxmarks.80}")
+	private String class7subjectsMaxMarks80;
+	
+	@Value("${subjects.class.7.maxmarks.40}")
+	private String class7subjectsMaxMarks40;
 	
 	public void loadproperties(){
 			// Intialize from property
@@ -107,6 +120,20 @@ public class SubjectService {
 		return repo.findBySubjectid(Long.parseLong(subjectid));
 	}
 	
+	// get all subjects in DB
+	public List<Subject> getAllSubjects(){
+		return daoService.getAllSubjects();
+	}
+	
+	// delete subject in DB
+	public void deleteSubject(String subjectid){
+		daoService.deleteSubject(subjectid);
+	}
+	
+	// save subject in DB
+	public Subject saveSubject(Subject subject){
+		return daoService.saveSubject(subject);
+	}
 	
 	// return Subject by subjectShortName
 	public Subject retrieveSubjectBySubjectShortName(String subjectShortName) {
@@ -120,6 +147,23 @@ public class SubjectService {
 		loadproperties();
 		return filterSubjectsByClassNo(classno);		
 	}
+	
+	public int retrieveMaxmarksByClassnoSubjectShortname(String classno, String subShortName) {
+		List<String> temp = new ArrayList<>();
+		int maxmarks = 0;
+		List<String> subjmax = filterMaxMarksByClassNo(classno);
+		for(String sub : subjmax) {
+			String[] subject = sub.split(",");
+			temp.addAll(Arrays.asList(subject));
+		}
+		if(classno.equals("5")) {
+			maxmarks = filterMaxMarksClass5BySubShortName(subShortName);
+		}else if(classno.equals("7")) {
+			maxmarks = filterMaxMarksClass7BySubShortName(subShortName);
+		}
+		return maxmarks;
+	}
+	
 	
 	public List filterSubjectsByClassNo(String classno){
 		List sub = new ArrayList();
@@ -139,5 +183,91 @@ public class SubjectService {
 		}
 		
 		return sub;
+	}
+	
+	
+	public List<String> filterMaxMarksByClassNo(String classno){
+		List<String> sub = new ArrayList<>();
+		
+		switch(classno) {
+			case "5":
+				sub.add(class5subjectsMaxMarks40);
+				sub.add(class5subjectsMaxMarks20);
+				break;
+				
+			case "7":
+				sub.add(class7subjectsMaxMarks80);
+				sub.add(class7subjectsMaxMarks40);
+				break;
+				
+			default:
+				sub = null;
+				break;
+		}
+		
+		return sub;
+	}
+	
+	public int filterMaxMarksClass5BySubShortName(String subShortName){
+		int marks = 0;
+		
+		switch(subShortName) {
+			case "ENG":
+				marks = 40;
+				break;
+			case "MAT":
+				marks = 40;
+				break;
+			case "HIN":
+				marks = 40;
+				break;
+			case "MAR":
+				marks = 40;
+				break;
+			case "EVS":
+				marks = 40;
+				break;				
+			case "COM":
+				marks = 20;
+				break;
+			default:
+				marks = 0;
+				break;
+		}
+		
+		return marks;
+	}
+	
+	public int filterMaxMarksClass7BySubShortName(String subShortName){
+		int marks = 0;
+		
+		switch(subShortName) {
+			case "ENG":
+				marks = 80;
+				break;
+			case "MAT":
+				marks = 80;
+				break;
+			case "HIN":
+				marks = 80;
+				break;
+			case "GER":
+				marks = 80;
+				break;
+			case "SCI":
+				marks = 80;
+				break;				
+			case "SST":
+				marks = 80;
+				break;
+			case "ICT":
+				marks = 40;
+				break;
+			default:
+				marks = 0;
+				break;
+		}
+		
+		return marks;
 	}
 }
