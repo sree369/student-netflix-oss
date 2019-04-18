@@ -5,36 +5,54 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+
+import org.springframework.beans.factory.annotation.Required;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //import org.sree.studentnetflixoss.subject.model.Subject;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name="Student")
+@ApiModel(description="All details about the student.")
 public class Student {
 	
 	@Id
 	@GeneratedValue
 	private long studentId;
 	
-	private long parentId;
-
-
-	@Column
+	@Size(min=2, message="First Name of Student should have atleast 2 characters")
+	@ApiModelProperty(notes="First Name of Student should have atleast 2 characters")
 	private String firstName;
-	@Column
+	
+	@Size(min=1, message="Last Name of Student should have atleast 2 characters")
+	@ApiModelProperty(notes="Last Name of Student should have atleast 2 characters")
 	private String lastName;
-	@Column
+	
+	@ApiModelProperty(notes="Gender of Student")
 	private String gender;
-	@Column
+	
+	@ApiModelProperty(notes="School of Student where they are studying")
 	private String school;
-	@Column
+	
+//	@Size(min=1, message="Class of the Student")
+	@ApiModelProperty(notes="Class of the Student")
 	private int studentClass;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
+	private Parent parent;
 //	@JsonInclude()
 //	@Transient
 //	private List<Subject> subjects = new ArrayList();
@@ -46,9 +64,8 @@ public class Student {
 	public Student() {
 		super();
 	}
-	public Student(long parentId, String firstName, String lastName, String gender, String school, int studentClass) {
+	public Student(String firstName, String lastName, String gender, String school, int studentClass) {
 		super();
-		this.parentId = parentId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
@@ -93,14 +110,14 @@ public class Student {
 		this.studentClass = studentClass;
 	}
 	
-	public long getParentId() {
-		return parentId;
+	public Parent getParent() {
+		return parent;
 	}
-	public void setParentId(long parentId) {
-		this.parentId = parentId;
+	public void setParent(Parent parent) {
+		this.parent = parent;
 	}
 	
-//	public List<Subject> getSubjects() {
+	//	public List<Subject> getSubjects() {
 //		return subjects;
 //	}
 //	public void setSubjects(List<Subject> subjects) {
@@ -114,7 +131,7 @@ public class Student {
 //	}
 	@Override
 	public String toString() {
-		return "Student [studentId=" + studentId + ", parentId=" + parentId + ", firstName=" + firstName + ", lastName="
+		return "Student [studentId=" + studentId + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", gender=" + gender + ", school=" + school + ", studentClass=" + studentClass + "]";
 	}
 	

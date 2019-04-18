@@ -7,11 +7,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description="All details about the parent.")
 @Entity
 @Table(name="Parent")
 public class Parent {
@@ -20,16 +27,20 @@ public class Parent {
 	@GeneratedValue
 	private long parentId;
 	
-	@Column
+	@Size(min=2, message="First Name should have atleast 2 characters")
+	@ApiModelProperty(notes="First Name should have atleast 2 characters")
 	private String firstName;
-	@Column
+	
+	@Size(min=1, message="Last Name should have atleast 1 characters")
+	@ApiModelProperty(notes="Last Name should have atleast 1 characters")
 	private String lastName;
-	@Column
+	
+	@Email
+	@ApiModelProperty(notes="Should be a valid emailid of the parent")
 	private String emailId;
 	
-	@JsonInclude()
-	@Transient
-	private List<Student> students = new ArrayList();
+	@OneToMany(mappedBy="parent")
+	private List<Student> students;
 	
 	
 	

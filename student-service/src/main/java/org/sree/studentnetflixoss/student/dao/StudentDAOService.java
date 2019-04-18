@@ -47,7 +47,7 @@ public class StudentDAOService {
 			Iterator itrStud = studs.iterator();
 			while(itrStud.hasNext()) {
 				Student student = (Student)itrStud.next();
-				if(student.getParentId() == parentId) {
+				if(student.getParent().getParentId() == parentId) {
 					temp.add(student);
 				}
 			}
@@ -74,7 +74,7 @@ public class StudentDAOService {
 		Iterator itr = studs.iterator();
 		while(itr.hasNext()) {
 			Student student = (Student)itr.next();
-			if(student.getParentId() == parentId) {
+			if(student.getParent().getParentId() == parentId) {
 				temp.add(student);
 			}
 		}
@@ -82,6 +82,44 @@ public class StudentDAOService {
 				
 		return parent;
 	}
+	
+	public List<Parent> retreiveAllUsers() {
+		return repo.findAll();
+	}
+	
+	public Parent retreiveUser(Long parentId) {
+		return repo.findById(parentId).get();
+	}
+	
+	public Parent saveUser(Parent parent) {
+		return repo.save(parent);
+	}
+	
+	public Parent updateUser(Long parentId, Parent parent) {
+		parent.setParentId(parentId);
+		return repo.save(parent);
+	}
+	
+	public void deleteUser(Long parentId) {
+		repo.deleteById(parentId);
+	}
+	
+	public List<Student> retreiveAllStudentsByParent(Parent parent) {
+		parent.getStudents();
+		return null;
+		//return repo.save(parentId);
+	}
+	
+	// save new Student to DB
+	public Student saveStudent(Student student){
+		return studentRepo.save(student);
+		//repo.save(parent);		
+	}
+	
+	public void deleteStudent(Long studentId) {
+		studentRepo.deleteById(studentId);
+	}
+
 }
 
 	

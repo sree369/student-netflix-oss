@@ -19,9 +19,9 @@ public class ParentRepositoryCommandRunner implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		Parent parent = new Parent("Sree", "P", "abc@xyz.com");
-		parentRepository.save(parent);
-		log.info("New Parent is created : " + parent);
+//		Parent parent = new Parent("Sree", "P", "abc@xyz.com");
+//		parentRepository.save(parent);
+//		log.info("New Parent is created : " + parent);
 		
 	}
 }

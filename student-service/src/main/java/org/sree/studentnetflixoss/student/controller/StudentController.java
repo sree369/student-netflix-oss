@@ -9,7 +9,7 @@ public class StudentController {
 	
 
 	
-	// /users/{userid}/students/{studentid}/subjects
+	
 	
 	
 
