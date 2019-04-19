@@ -1,7 +1,10 @@
 package org.sree.studentnetflixoss.student.controller;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +45,7 @@ public class StudentServiceController {
 	
 	// POST /students-service/parents
 	@PostMapping("/students-service/parents")
-	public ResponseEntity<Object> saveNewUser(@RequestBody Parent parent){
+	public ResponseEntity<Object> saveNewUser(@Valid @RequestBody Parent parent){
 		Parent newParent = userService.saveUser(parent);
 		// CREATED
 		// /parent/{parentId}     newParent.getParentId()
@@ -57,8 +60,8 @@ public class StudentServiceController {
 	
 	// GET /students-service/parents/{parentId}
 	@GetMapping("/students-service/parents/{parentId}")
-	public Parent retrieveUser(@PathVariable String parentId) {
-		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
+	public Parent retrieveUser(@PathVariable BigDecimal parentId) {
+		Parent parent = userService.retreiveUser(parentId.longValue());
 		if(parent == null)
 			throw new ParentNotFoundException("Parent not found with id "+ parentId);
 		
@@ -67,7 +70,7 @@ public class StudentServiceController {
 	
 	// PUT /students-service/parents/{parentId}
 	@PutMapping("/students-service/parents/{parentId}")
-	public Parent updateUser(@PathVariable String parentId, @RequestBody Parent parent) {
+	public Parent updateUser(@PathVariable String parentId, @Valid @RequestBody Parent parent) {
 		Parent updatedParent = userService.updateUser(Long.parseLong(parentId), parent);
 		if(updatedParent == null)
 			throw new ParentNotFoundException("Parent not found with id "+ parentId);
@@ -149,7 +152,7 @@ public class StudentServiceController {
 	
 	// PUT /students-service/parents/{parentId}/students/{studentid}
 	@PutMapping("/students-service/parents/{parentId}/students/{studentId}")
-	public Student updateStudent(@PathVariable String parentId, @PathVariable String studentId, @RequestBody Student reqstStudent){
+	public Student updateStudent(@PathVariable String parentId, @PathVariable String studentId,@Valid @RequestBody Student reqstStudent){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
 			throw new ParentNotFoundException("Parent not found with id " + parentId);
@@ -200,6 +203,7 @@ public class StudentServiceController {
 		return selectedStudent;
 	}
 	
+	// CALL using feign
 	
 	// /students-service/parents/{parentId}/students/{studentid}/subjects
 }
