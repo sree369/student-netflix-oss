@@ -1,5 +1,7 @@
 package org.sree.studentnetflixoss.marks.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -17,13 +19,27 @@ public class MarksDAOService {
 	@Autowired
 	private MarksRepository repo;
 	
-	public Marks getTermMarks(long studentId, long subjectId, String termType) {
-		
-//		return repo.findByStudentIdSubjectIdTermType(studentId, subjectId, termType);
-//		Query qu = entityManager.createQuery("select * from marks where studentid=? and subjectid=? and termType=?");
-//		qu.set
-	//	Marks marks = (Marks)qu.getSingleResult();
-		// hard coding till the DB issue is solved
-		return new Marks(1, 1, 1, "TERM1", 70);
+	public Marks findByStudentidAndSubjectIdAndTermType(long studentId, long subjectId, String termType) {
+		return repo.findByStudentIdAndSubjectIdAndTermType(studentId, subjectId, termType);
 	}
+	
+	public List<Marks> findByStudentIdAndSubjectId(long studentId, long subjectId) {
+		return repo.findByStudentIdAndSubjectId(studentId, subjectId);
+
+	}
+	
+	public void saveMarksByTermType(long studentId, long subjectId, Marks marks) {
+		repo.save(marks);
+
+	}
+	
+	public void updateMarks(Marks marks) {
+		repo.save(marks);
+
+	}
+
+	public void deleteMarks(Marks marks) {
+		repo.delete(marks);
+	}
+	
 }
