@@ -34,7 +34,7 @@ import org.sree.studentnetflixoss.subject.service.SubjectService;
 @RestController
 public class SubjectController {
 	
-	private static final Logger log = LoggerFactory.getLogger(SubjectController.class);
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private SubjectService subjectService;
