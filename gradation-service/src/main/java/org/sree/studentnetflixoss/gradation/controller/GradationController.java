@@ -24,8 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.sree.studentnetflixoss.gradation.exception.GradationNotFoundException;
+import org.sree.studentnetflixoss.gradation.exception.StandardNotFoundException;
 import org.sree.studentnetflixoss.gradation.model.Gradation;
+import org.sree.studentnetflixoss.gradation.model.Standard;
 import org.sree.studentnetflixoss.gradation.service.GradationService;
+import org.sree.studentnetflixoss.gradation.service.StandardService;
 
 
 @RestController
@@ -35,6 +38,9 @@ public class GradationController {
 	
 	@Autowired
 	private GradationService service;
+	
+	@Autowired
+	private StandardService standardService;
 	
 	
 	// get all gradations
@@ -116,8 +122,28 @@ public class GradationController {
 		service.deleteGradeById(gradationid.longValue());
 	}
 	
-	//get grades for marks and classno							
-	//GET /gradation-service/marks/{marks}/classno/{classno}
-	// TODO
+	//get grades for percentage and classno							
+	//GET /gradation-service/percentage/{percentage}/classno/{classno}
+	@GetMapping("/gradation-service/percentage/{percentage}/classno/{classno}")
+	public Gradation retreiveGradeByPercentageAndClassno(@PathVariable BigDecimal percentage, 
+			@PathVariable BigDecimal classno) {
+		Gradation grad = null;
+		Standard std = standardService.findByStandard(classno.intValue());
+		log.info("Standard found : "+ std);
+		if(std == null)
+			throw new StandardNotFoundException("classno : "+ classno);
+		
+		Gradation grade = service.findGradationForPercentage(percentage.longValue(), std.getStandardDesc());
+		if(grade == null)
+			throw new GradationNotFoundException("No Gradation for percentage : "+ percentage);
+		
 
+		return grade;
+		
+	}
+
+	
+
+	
+	
 }

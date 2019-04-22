@@ -29,4 +29,11 @@ public class GradationDAOService {
 		repo.deleteById(gradationid);
 	}
 	
+	
+	public Gradation findGradationForPercentage(Long percentage, String stddesc) {
+		Long perc = percentage;
+		
+		return repo.findOneByMaxMarksGradeGreaterThanEqualAndMinMarksGradeLessThanEqualAndStandard(percentage, perc, stddesc);
+//		return repo.findOneByGreaterThanMinMarksGradeAndLessThanMaxMarksGrade(percentage, stddesc);
+	}
 }

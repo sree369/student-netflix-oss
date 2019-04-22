@@ -3,6 +3,7 @@ package org.sree.studentnetflixoss.gradation.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Gradation {
@@ -16,6 +17,8 @@ public class Gradation {
 	private long minMarksGrade;
 	
 	private String standard;
+	
+	@Size(max=2, message="Grade should be of 2 characters size only")
 	
 	private String grade;
 	

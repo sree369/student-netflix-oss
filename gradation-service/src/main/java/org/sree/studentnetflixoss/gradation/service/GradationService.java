@@ -29,6 +29,10 @@ public class GradationService {
 		dao.deleteGradeById(gradationid);
 	}
 	
+	public Gradation findGradationForPercentage(Long percentage, String stdesc) {
+		return dao.findGradationForPercentage(percentage, stdesc);
+	}
+	
 	
 	
 
