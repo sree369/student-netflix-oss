@@ -1,0 +1,6 @@
+create table parent (parent_id bigint not null, email_id varchar(255), first_name varchar(255), last_name varchar(255), primary key (parent_id));
+create table student (student_id bigint not null, first_name varchar(255), gender varchar(255), last_name varchar(255), school varchar(255), student_class integer not null, parent_parent_id bigint, primary key (student_id));
+alter table student add constraint CK1 foreign key (parent_parent_id) references parent(parent_id);
+
+create user 'schooladmin'@'localhost' identified by 'sreedhar';
+grant all on studentsdb.* to 'schooladmin'@'localhost';

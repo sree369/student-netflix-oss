@@ -43,14 +43,14 @@ public class StudentServiceController {
 	@Autowired
 	private SubjectProxy proxy;
 	
-	// GET /students-service/parents
-	@GetMapping("/students-service/parents")
+	// GET /schoolstudents/parents
+	@GetMapping("/schoolstudents/parents")
 	public List<Parent> getAllUsers(){
 		return userService.retreiveAllUsers();
 	}
 	
-	// POST /students-service/parents
-	@PostMapping("/students-service/parents")
+	// POST /schoolstudents/parents
+	@PostMapping("/schoolstudents/parents")
 	public ResponseEntity<Object> saveNewUser(@Valid @RequestBody Parent parent){
 		Parent newParent = userService.saveUser(parent);
 		// CREATED
@@ -64,8 +64,8 @@ public class StudentServiceController {
 		return ResponseEntity.created(location).build();		
 	}
 	
-	// GET /students-service/parents/{parentId}
-	@GetMapping("/students-service/parents/{parentId}")
+	// GET /schoolstudents/parents/{parentId}
+	@GetMapping("/schoolstudents/parents/{parentId}")
 	public Parent retrieveUser(@PathVariable BigDecimal parentId) {
 		Parent parent = userService.retreiveUser(parentId.longValue());
 		if(parent == null)
@@ -74,8 +74,8 @@ public class StudentServiceController {
 		return parent;
 	}
 	
-	// PUT /students-service/parents/{parentId}
-	@PutMapping("/students-service/parents/{parentId}")
+	// PUT /schoolstudents/parents/{parentId}
+	@PutMapping("/schoolstudents/parents/{parentId}")
 	public Parent updateUser(@PathVariable String parentId, @Valid @RequestBody Parent parent) {
 		Parent updatedParent = userService.updateUser(Long.parseLong(parentId), parent);
 		if(updatedParent == null)
@@ -84,8 +84,8 @@ public class StudentServiceController {
 		return parent;
 	}
 	
-	// DELETE /students-service/parents/{parentId}
-	@DeleteMapping("/students-service/parents/{parentId}")
+	// DELETE /schoolstudents/parents/{parentId}
+	@DeleteMapping("/schoolstudents/parents/{parentId}")
 	public void deleteUser(@PathVariable String parentId) {
 		if(parentId == null)
 			throw new ParentNotFoundException("Parent not found with id "+ parentId);
@@ -95,8 +95,8 @@ public class StudentServiceController {
 	
 	
 	
-	// GET /students-service/parents/{parentId}/students
-	@GetMapping("/students-service/parents/{parentId}/students")
+	// GET /schoolstudents/parents/{parentId}/students
+	@GetMapping("/schoolstudents/parents/{parentId}/students")
 	public List<Student> getAllStudents(@PathVariable String parentId){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
@@ -107,8 +107,8 @@ public class StudentServiceController {
 
 	}
 	
-	// POST /students-service/parents/{parentId}/students
-	@PostMapping("/students-service/parents/{parentId}/students")
+	// POST /schoolstudents/parents/{parentId}/students
+	@PostMapping("/schoolstudents/parents/{parentId}/students")
 	public Student saveStudentForparentId(@PathVariable String parentId, @RequestBody Student student){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
@@ -124,8 +124,8 @@ public class StudentServiceController {
 
 	}
 	
-	// GET /students-service/parents/{parentId}/students/{studentid}
-	@GetMapping("/students-service/parents/{parentId}/students/{studentId}")
+	// GET /schoolstudents/parents/{parentId}/students/{studentid}
+	@GetMapping("/schoolstudents/parents/{parentId}/students/{studentId}")
 	public Resource<Student> getStudent(@PathVariable String parentId, @PathVariable String studentId){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
@@ -156,8 +156,8 @@ public class StudentServiceController {
 		return resource;
 	}
 	
-	// PUT /students-service/parents/{parentId}/students/{studentid}
-	@PutMapping("/students-service/parents/{parentId}/students/{studentId}")
+	// PUT /schoolstudents/parents/{parentId}/students/{studentid}
+	@PutMapping("/schoolstudents/parents/{parentId}/students/{studentId}")
 	public Student updateStudent(@PathVariable String parentId, @PathVariable String studentId,@Valid @RequestBody Student reqstStudent){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
@@ -182,8 +182,8 @@ public class StudentServiceController {
 		return savedStudent;
 	}
 	
-	// DELETE /students-service/parents/{parentId}/students/{studentid}
-	@DeleteMapping("/students-service/parents/{parentId}/students/{studentId}")
+	// DELETE /schoolstudents/parents/{parentId}/students/{studentid}
+	@DeleteMapping("/schoolstudents/parents/{parentId}/students/{studentId}")
 	public Student updateStudent(@PathVariable String parentId, @PathVariable String studentId){
 		Parent parent = userService.retreiveUser(Long.parseLong(parentId));
 		if(parent == null) {
@@ -211,10 +211,10 @@ public class StudentServiceController {
 	
 	// CALL using feign
 	
-	// /students-service/parents/{parentId}/students/{studentid}/subjects
+	// /schoolstudents/parents/{parentId}/students/{studentid}/subjects
 	
-	// GET /students-service-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation
-	@GetMapping("/students-service-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation")
+	// GET /schoolstudents-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation
+	@GetMapping("/schoolstudents-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation")
 	public GradationBean reteiveGradeFeign(@PathVariable String studentid,  @PathVariable BigDecimal classno, @PathVariable String subjectid,
 			@PathVariable String termtype) {
 

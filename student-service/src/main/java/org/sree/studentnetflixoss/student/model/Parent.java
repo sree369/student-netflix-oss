@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,19 +25,27 @@ import io.swagger.annotations.ApiModelProperty;
 public class Parent {
 
 	@Id
-	@GeneratedValue
+	//GenerationType.IDENTITY use for create primary key
+	//GenerationType.AUTO use for create table without primary key
+	//for this reason hibernate create a table hibernate_sequence that store 
+	//last value (auto incremented value)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="parent_id")
 	private long parentId;
 	
 	@Size(min=2, message="First Name should have atleast 2 characters")
 	@ApiModelProperty(notes="First Name should have atleast 2 characters")
+	@Column(name="first_name")
 	private String firstName;
 	
 	@Size(min=1, message="Last Name should have atleast 1 characters")
 	@ApiModelProperty(notes="Last Name should have atleast 1 characters")
+	@Column(name="last_name")
 	private String lastName;
 	
 	@Email
 	@ApiModelProperty(notes="Should be a valid emailid of the parent")
+	@Column(name="email_id")
 	private String emailId;
 	
 	@OneToMany(mappedBy="parent")

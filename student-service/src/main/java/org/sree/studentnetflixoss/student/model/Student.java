@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,29 +30,40 @@ import io.swagger.annotations.ApiModelProperty;
 public class Student {
 	
 	@Id
-	@GeneratedValue
+	//GenerationType.IDENTITY use for create primary key
+	//GenerationType.AUTO use for create table without primary key
+	//for this reason hibernate create a table hibernate_sequence that store 
+	//last value (auto incremented value)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="student_id")
 	private long studentId;
 	
 	@Size(min=2, message="First Name of Student should have atleast 2 characters")
 	@ApiModelProperty(notes="First Name of Student should have atleast 2 characters")
+	@Column(name="first_name")
 	private String firstName;
 	
 	@Size(min=1, message="Last Name of Student should have atleast 2 characters")
 	@ApiModelProperty(notes="Last Name of Student should have atleast 2 characters")
+	@Column(name="last_name")
 	private String lastName;
 	
 	@ApiModelProperty(notes="Gender of Student")
+	@Column(name="gender")
 	private String gender;
 	
 	@ApiModelProperty(notes="School of Student where they are studying")
+	@Column(name="school")
 	private String school;
 	
 //	@Size(min=1, message="Class of the Student")
 	@ApiModelProperty(notes="Class of the Student")
+	@Column(name="student_class")
 	private int studentClass;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JsonIgnore
+	//@Column(name="parent_parent_id")
 	private Parent parent;
 //	@JsonInclude()
 //	@Transient
@@ -64,6 +76,7 @@ public class Student {
 	public Student() {
 		super();
 	}
+	
 	public Student(String firstName, String lastName, String gender, String school, int studentClass) {
 		super();
 		this.firstName = firstName;
