@@ -3,6 +3,7 @@ package org.sree.studentnetflixoss.marks.controller;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.sree.studentnetflixoss.marks.exception.MarksNotFoundException;
+import org.sree.studentnetflixoss.marks.model.GradeBean;
 import org.sree.studentnetflixoss.marks.model.Marks;
+import org.sree.studentnetflixoss.marks.proxy.GradationProxy;
 import org.sree.studentnetflixoss.marks.repository.MarksRepository;
 import org.sree.studentnetflixoss.marks.service.MarksService;
 
@@ -36,6 +39,8 @@ public class MarksController {
 	
 	@Autowired
 	private Environment environment;
+	@Autowired	
+	private GradationProxy proxy;
 	
 	// GET /marks/students/{studentid}/subjects/{subjectid}/terms
 	@GetMapping("/marks/students/{studentid}/subjects/{subjectid}/terms")
@@ -85,7 +90,7 @@ public class MarksController {
 					" and TermType : "+ termtype);
 		}
 		marks.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
-		logger.info("{Marks value returned }", marks);
+		logger.info("{Marks value returned }"+ marks);
 		
 		//"all-marks", SERVER_PATH + "/marks/students/{studentid}/subjects/{subjectid}/terms"
 		//retrieveAllSubjects
@@ -99,6 +104,33 @@ public class MarksController {
 		//HATEOAS
 		
 		return resource;
+//		return marks;
+	}
+	
+	// GET /marks/students/{studentid}/subjects/{subjectid}/terms/{termtype}
+	@GetMapping("/marks/students/{studentid}/classnos/{classno}/subjects/{subjectid}/outofmarks/{outofmarks}/terms/{termtype}/gradation")
+	public GradeBean retreiveTermMarks(@PathVariable String studentid, @PathVariable BigDecimal classno, 
+			@PathVariable String subjectid,	@PathVariable Integer outofmarks, @PathVariable String termtype){
+		
+		Marks marks = service.getTermMarks(studentid,classno.intValue(), subjectid, termtype);
+		logger.info("{Marks }"+ marks);
+		if(marks == null) {
+			throw new MarksNotFoundException("No Marks found for the studentid : " + studentid +  " and classno "+ classno + "and subjectid : "+ subjectid + 
+					" and TermType : "+ termtype);
+		}
+		double markOfSubject = Integer.valueOf(marks.getObtainedMarks()).doubleValue();
+		double outOfMarks = outofmarks.doubleValue();
+		logger.info("{Marks of subject }"+ markOfSubject);
+		logger.info("{outOfMarks }"+outOfMarks);
+		double percentage = (markOfSubject/outOfMarks) * 100;
+		logger.info("{percentage }"+ percentage);
+		
+		GradeBean grade = proxy.retrieveGrade(BigDecimal.valueOf(percentage), classno);
+		
+		logger.info("{grade }"+ grade);
+		//HATEOAS
+		
+		return grade;
 //		return marks;
 	}
 	

@@ -9,6 +9,8 @@ public interface MarksRepository extends JpaRepository<Marks, Long> {
 
 	Marks findByStudentIdAndSubjectIdAndTermType(long studentId, long subjectId, String termType);
 	
+	Marks findByStudentIdAndClassnoAndSubjectIdAndTermType(long studentId, int classno, long subjectId, String termType);
+	
 	List<Marks> findByStudentIdAndSubjectId(long studentId, long subjectId);
 
 //	Marks findByStudentId(long studentId);

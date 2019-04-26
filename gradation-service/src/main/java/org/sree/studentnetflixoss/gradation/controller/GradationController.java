@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,8 @@ public class GradationController {
 	@Autowired
 	private StandardService standardService;
 	
+	@Autowired
+	private Environment environment;
 	
 	// get all gradations
 	//GET /gradation-service/gradations
@@ -124,9 +127,10 @@ public class GradationController {
 	
 	//get grades for percentage and classno							
 	//GET /gradation-service/percentage/{percentage}/classno/{classno}
-	@GetMapping("/gradation-service/percentage/{percentage}/classno/{classno}")
+	@GetMapping("/gradation/percentage/{percentage}/classno/{classno}")
 	public Gradation retreiveGradeByPercentageAndClassno(@PathVariable BigDecimal percentage, 
 			@PathVariable BigDecimal classno) {
+		log.info("inside:---------> ");
 		Gradation grad = null;
 		Standard std = standardService.findByStandard(classno.intValue());
 		log.info("Standard found : "+ std);
@@ -137,13 +141,19 @@ public class GradationController {
 		if(grade == null)
 			throw new GradationNotFoundException("No Gradation for percentage : "+ percentage);
 		
-
+		grade.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		return grade;
 		
 	}
 
 	
-
+//	@GetMapping("gradation/classnos/{classno}/percentages/{percentage}")
+//	public String retrieveGrade(@PathVariable("classno") BigDecimal classno, @PathVariable("percentage") BigDecimal percentage) {
+//		
+//		
+//		
+//		return null;
+//	}
 	
 	
 }

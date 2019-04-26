@@ -3,7 +3,10 @@ package org.sree.studentnetflixoss.gradation.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 public class Gradation {
@@ -22,7 +25,22 @@ public class Gradation {
 	
 	private String grade;
 	
+	@JsonInclude()
+	@Transient
+	private int port;
 	
+
+	public int getPort() {
+		return port;
+	}
+
+
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+
 
 	public Gradation() {
 		super();

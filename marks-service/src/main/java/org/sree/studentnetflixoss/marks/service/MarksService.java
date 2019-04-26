@@ -17,6 +17,10 @@ public class MarksService {
 		return dao.findByStudentidAndSubjectIdAndTermType(Long.parseLong(studentid), Long.parseLong(subjectid), termtype);
 	}
 	
+	public Marks getTermMarks(String studentid, Integer classno, String subjectid, String termtype) {
+		return dao.findByStudentidAndSubjectIdAndTermType(Long.parseLong(studentid), classno, Long.parseLong(subjectid), termtype);
+	}
+	
 	public List<Marks> getAllTermMarks(Long studentid, Long subjectid) {
 		return dao.findByStudentIdAndSubjectId(studentid, subjectid);
 	}

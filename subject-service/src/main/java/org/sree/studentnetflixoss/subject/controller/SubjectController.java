@@ -1,5 +1,6 @@
 package org.sree.studentnetflixoss.subject.controller;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.sree.studentnetflixoss.subject.exception.MaxMarksNotFoundException;
 import org.sree.studentnetflixoss.subject.exception.SubjectNotFoundException;
+import org.sree.studentnetflixoss.subject.model.GradeBean;
 import org.sree.studentnetflixoss.subject.model.PercentageBean;
 import org.sree.studentnetflixoss.subject.model.Subject;
-import org.sree.studentnetflixoss.subject.proxy.PercentageProxy;
+import org.sree.studentnetflixoss.subject.proxy.MarksProxy;
 import org.sree.studentnetflixoss.subject.service.SubjectService;
 
 
@@ -40,7 +42,7 @@ public class SubjectController {
 	private SubjectService subjectService;
 	
 	@Autowired
-	private PercentageProxy proxy;
+	private MarksProxy proxy;
 		
 	// retrieve all Subjects from DB
 	// /subject-service/subjects
@@ -61,11 +63,11 @@ public class SubjectController {
 
 	
 	// /subject-service/subjects/{subjectid}
-//	@GetMapping("/subject-service/subjects/{subjectid}")
-//	public Subject reteiveSubjectBySubjectId(@PathVariable String classno, @PathVariable String subjectid) {
-//		return subjectService.retrieveSubjectBySubjectId(subjectid);
-//		//return null;
-//	}
+	@GetMapping("/subject-service/subjects/{subjectid}")
+	public Subject reteiveSubjectBySubjectId(@PathVariable String classno, @PathVariable String subjectid) {
+		return subjectService.retrieveSubjectBySubjectId(subjectid);
+		//return null;
+	}
 	
 	// /subject-service/subjects/{subjectid}
 	@DeleteMapping("/subject-service/subjects/{subjectid}")
@@ -74,7 +76,7 @@ public class SubjectController {
 	}
 	
 	// /subject-service/subjects/{subshortname}
-	@GetMapping("/subject-service/subjects/{subshortname}")
+	@GetMapping("/subject-service/subjects/shortname/{subshortname}")
 	public Resource<Subject> reteiveSubjectShortName(@PathVariable String subshortname) {
 		Subject subject = subjectService.retrieveSubjectBySubjectShortName(subshortname);
 		if(subject == null) {
@@ -197,5 +199,21 @@ public class SubjectController {
 		return new PercentageBean(response.getMarksId(), Long.parseLong(studentid), Long.parseLong(subjectid), termtype, 
 				response.getObtainedMarks(), (int)outOf,perc, response.getPort());
 //		return null;
+	}
+	
+	// /subject-service-feign/students/{studentid}/subjects/{subjectid}/terms/{termtype}
+	@GetMapping("/subjects-feign/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation")
+	public GradeBean reteiveGradeFeign(@PathVariable String studentid,  @PathVariable BigDecimal classno, @PathVariable String subjectid,
+			@PathVariable String termtype) {
+
+		log.info("Proxy set :--> ");		
+		Subject subject = subjectService.retrieveSubjectBySubjectId(subjectid);
+		log.info("Retreive subject :--> " + subject);		
+		int outOfMarks = subjectService.retrieveMaxmarksByClassnoSubjectShortname(classno.toPlainString(), subject.getSubShortName());
+		log.info("Out of Marks :--> " + outOfMarks);		
+		GradeBean response = proxy.retrieveGrade(studentid, classno, subjectid,outOfMarks, termtype);
+		log.info("reteiveGradeFeign" );
+		
+		return response;
 	}
 }

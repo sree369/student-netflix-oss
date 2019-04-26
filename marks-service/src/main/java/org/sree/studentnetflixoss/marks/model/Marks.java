@@ -20,6 +20,8 @@ public class Marks {
 	
 	private long subjectId;
 	
+	private int classno;
+	
 	private String termType;
 	
 	private int obtainedMarks;
@@ -53,6 +55,19 @@ public class Marks {
 //		this.percentage = percentage;
 //		this.grade = grade;
 //		this.result = result;
+	}
+	
+	
+	
+
+	public Marks(long marksId, long studentId, long subjectId, int classno, String termType, int obtainedMarks) {
+		super();
+		this.marksId = marksId;
+		this.studentId = studentId;
+		this.subjectId = subjectId;
+		this.classno = classno;
+		this.termType = termType;
+		this.obtainedMarks = obtainedMarks;
 	}
 
 	public long getMarksId() {
@@ -93,6 +108,14 @@ public class Marks {
 
 	public void setObtainedMarks(int obtainedMarks) {
 		this.obtainedMarks = obtainedMarks;
+	}
+
+	public int getClassno() {
+		return classno;
+	}
+
+	public void setClassno(int classno) {
+		this.classno = classno;
 	}
 
 	public int getPort() {

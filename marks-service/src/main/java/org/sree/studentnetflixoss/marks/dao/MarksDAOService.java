@@ -23,6 +23,11 @@ public class MarksDAOService {
 		return repo.findByStudentIdAndSubjectIdAndTermType(studentId, subjectId, termType);
 	}
 	
+	public Marks findByStudentidAndSubjectIdAndTermType(long studentId, Integer classno, long subjectId, String termType) {
+		return repo.findByStudentIdAndClassnoAndSubjectIdAndTermType(studentId, classno, subjectId, termType);
+	}
+	
+	
 	public List<Marks> findByStudentIdAndSubjectId(long studentId, long subjectId) {
 		return repo.findByStudentIdAndSubjectId(studentId, subjectId);
 

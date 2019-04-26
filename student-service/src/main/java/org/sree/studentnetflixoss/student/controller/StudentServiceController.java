@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.sree.studentnetflixoss.student.exception.ParentNotFoundException;
 import org.sree.studentnetflixoss.student.exception.StudentNotFoundException;
+import org.sree.studentnetflixoss.student.model.GradationBean;
 import org.sree.studentnetflixoss.student.model.Parent;
 import org.sree.studentnetflixoss.student.model.Student;
+import org.sree.studentnetflixoss.student.proxy.SubjectProxy;
 import org.sree.studentnetflixoss.student.service.UserService;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -36,6 +39,9 @@ public class StudentServiceController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private SubjectProxy proxy;
 	
 	// GET /students-service/parents
 	@GetMapping("/students-service/parents")
@@ -206,4 +212,22 @@ public class StudentServiceController {
 	// CALL using feign
 	
 	// /students-service/parents/{parentId}/students/{studentid}/subjects
+	
+	// GET /students-service-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation
+	@GetMapping("/students-service-feign/parents/{parentId}/students/{studentid}/classnos/{classno}/subjects/{subjectid}/terms/{termtype}/gradation")
+	public GradationBean reteiveGradeFeign(@PathVariable String studentid,  @PathVariable BigDecimal classno, @PathVariable String subjectid,
+			@PathVariable String termtype) {
+
+		log.info("Proxy set :--> ");
+		
+		GradationBean response = proxy.retrieveGradation(studentid, classno, subjectid, termtype);
+		// hard coded value
+//		double outOf = 80;
+//		double mark = response.getObtainedMarks();
+//		double perc = mark/outOf;
+//		log.info("perc : " + perc + " mark : "+mark);
+//		response.setPort(port);
+		return response;
+//		return null;
+	}
 }
