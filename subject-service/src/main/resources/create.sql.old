@@ -1,0 +1,3 @@
+create table subject (subjectid bigint not null, sub_short_name varchar(255), subject_name varchar(255), primary key (subjectid));
+
+grant all on subjectsdb.* to 'schooladmin'@'localhost';
